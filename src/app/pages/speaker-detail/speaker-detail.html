@@ -2,9 +2,9 @@
   <ion-header class="ion-no-border">
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-back-button defaultHref="/app/tabs/speakers"></ion-back-button>
+        <ion-back-button defaultHref="/app/tabs/speakers" [text]="'Geri'"></ion-back-button>
       </ion-buttons>
-      <ion-buttons *ngIf="speaker" slot="end">
+      <ion-buttons *ngIf="speaker && !speaker.isAnonymous" slot="end">
         <ion-button (click)="openContact(speaker)">
           <ion-icon slot="icon-only" ios="call-outline" md="call-sharp"></ion-icon>
         </ion-button>
@@ -16,28 +16,73 @@
   </ion-header>
 
   <div class="speaker-background">
-    <img [src]="speaker?.profilePic" [alt]="speaker?.name">
-    <h2>{{speaker?.name}}</h2>
+    <img *ngIf="speaker" [src]="'assets/img/'+speaker.subType+'.png'" [alt]="speaker.name + ' profile picture'">
+    <h2>{{speaker?.name}} {{speaker?.surname}}</h2>
   </div>
 
   <div class="ion-padding speaker-detail">
-    <p>{{speaker?.about}} Say hello on social media!</p>
+    <p>{{speaker?.about}}</p>
 
-    <hr>
-
-    <ion-chip color="twitter" button (click)="openExternalUrl('https://twitter.com/' + speaker.twitter)">
+    <div *ngIf="!speaker?.isAnonymous">
+    <ion-chip color="twitter" button (click)="openExternalUrl('https://twitter.com/@' + speaker.name)">
       <ion-icon name="logo-twitter"></ion-icon>
       <ion-label>Twitter</ion-label>
     </ion-chip>
 
-    <ion-chip color="dark" button (click)="openExternalUrl('https://github.com/ionic-team/ionic')">
+    <ion-chip color="dark" button (click)="openExternalUrl('https://github.com/fermanquliyev')">
       <ion-icon name="logo-github"></ion-icon>
       <ion-label>GitHub</ion-label>
     </ion-chip>
 
-    <ion-chip color="instagram" button (click)="openExternalUrl('https://instagram.com/ionicframework')">
+    <ion-chip color="instagram" button (click)="openExternalUrl('https://instagram.com/quliyevferman')">
       <ion-icon name="logo-instagram"></ion-icon>
       <ion-label>Instagram</ion-label>
     </ion-chip>
+  </div>
+    <hr>
+    <ion-row>
+      <ion-col size="12" offset="0" size-lg="4" offset-lg="4" size-md="6" offset-md="3">
+        <div style="min-height: 300px; max-height: max-content;margin: 0px !important;">
+          <ion-card class="post-card">
+            <ion-item lines="none" class="post-item">
+              <ion-button class="post-some" color="light">
+                <ion-input type="text" name="postText" [(ngModel)]="createPostText" placeholder="Mütəxəsisə yazın..."
+                  class="post-some-title"></ion-input>
+              </ion-button>
+              <ion-buttons slot="end">
+                <ion-button color="medium">
+                  <ion-icon slot="icon-only" name="image-outline"></ion-icon>
+                </ion-button>
+                <ion-button color="medium" (click)="createPost()">
+                  <ion-icon slot="icon-only" name="send"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </ion-item>
+          </ion-card>
+
+          <ion-list #postList *ngIf="postDatas.length">
+            <ion-item-sliding *ngFor="let post of postDatas;let i =index;" #slidingItem>
+              <ion-item>
+                <app-post [post]="post" (onRemove)="deletePost(i)"></app-post>
+              </ion-item>
+              <ion-item-options>
+                <ion-item-option *ngIf="!user.hasFavorite(post.id)" color="favorite"
+                  (click)="addFavorite(slidingItem, post)">
+                  SAXLA
+                </ion-item-option>
+                <ion-item-option color="danger" *ngIf="user.hasFavorite(post.id)"
+                  (click)="removeFavorite(slidingItem, post, 'Remove Favorite')">
+                  POZ
+                </ion-item-option>
+              </ion-item-options>
+            </ion-item-sliding>
+            <ion-list-header *ngIf="!postDatas.length">
+              YAZI TAPILMADI
+            </ion-list-header>
+          </ion-list>
+        </div>
+      </ion-col>
+    </ion-row>
+
   </div>
 </ion-content>

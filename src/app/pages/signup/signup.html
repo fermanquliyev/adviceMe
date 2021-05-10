@@ -3,43 +3,105 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Signup</ion-title>
+    <ion-title>Qeydiyyat</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <div class="signup-logo">
-    <img src="assets/img/appicon.svg" alt="Ionic Logo">
-  </div>
+  <!-- <div class="signup-logo">
+    <img src="assets/img/appicon.png" alt="Ionic Logo">
+  </div> -->
 
   <form #signupForm="ngForm" novalidate>
-    <ion-list lines="none">
+    <ion-list>
       <ion-item>
-        <ion-label position="stacked" color="primary">Username</ion-label>
-        <ion-input [(ngModel)]="signup.username" name="username" type="text" #username="ngModel" required>
+        <ion-label position="stacked" color="primary">Adınız</ion-label>
+        <ion-input [(ngModel)]="signup.name" name="name" type="text" #name="ngModel" required>
         </ion-input>
       </ion-item>
       <ion-text color="danger">
-        <p [hidden]="username.valid || submitted == false" class="ion-padding-start">
-          Username is required
+        <p [hidden]="name.valid || submitted == false" class="ion-padding-start">
+          Ad boş ola bilməz
+        </p>
+      </ion-text>
+      <ion-item>
+        <ion-label position="stacked" color="primary">Soyadınız</ion-label>
+        <ion-input [(ngModel)]="signup.surname" name="surname" type="text" #surname="ngModel" required>
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="surname.valid || submitted == false" class="ion-padding-start">
+          Soyad boş ola bilməz
+        </p>
+      </ion-text>
+      <ion-item>
+        <ion-label position="stacked" color="primary">Haqqınızda</ion-label>
+        <ion-textarea [(ngModel)]="signup.about" name="about" #about="ngModel">
+        </ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked" color="primary">E-poçt ünvanınız</ion-label>
+        <ion-input [(ngModel)]="signup.email" name="email" type="email" #email="ngModel" required>
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="email.valid || submitted == false" class="ion-padding-start">
+          E-poçt boş ola bilməz
         </p>
       </ion-text>
 
       <ion-item>
-        <ion-label position="stacked" color="primary">Password</ion-label>
-        <ion-input [(ngModel)]="signup.password" name="password" type="password" #password="ngModel" required>
+        <ion-label position="stacked" color="primary">Şifrəniz</ion-label>
+        <ion-input [(ngModel)]="signup.password" [minlength]="5" name="password" type="password" #password="ngModel"
+          required>
         </ion-input>
       </ion-item>
       <ion-text color="danger">
         <p [hidden]="password.valid || submitted == false" class="ion-padding-start">
-          Password is required
+          Şifrə boş ola bilməz. Minimum 5 simvol olmalıdır.
         </p>
       </ion-text>
+
+      <ion-item>
+        <ion-label position="stacked" color="primary">Şifrənin təkrarı</ion-label>
+        <ion-input [(ngModel)]="signup.passwordConfirm" name="passwordConfirm" type="password"
+          #passwordConfirm="ngModel" required>
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="passwordConfirm.value==password.value || submitted == false" class="ion-padding-start">
+          Şifrə uyğun gəlmir
+        </p>
+      </ion-text>
+
+      <ion-item>
+        <ion-label>Siz kimsiniz?</ion-label>
+        <ion-select [(ngModel)]="signup.type" (ngModelChange)="log()" name="type" interface="action-sheet" cancelText="Bağla">
+          <ion-select-option [value]="'USER'">Ehiyyacı olan</ion-select-option>
+          <ion-select-option [value]="'SPECIALIST'">Mütəxəsis</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+
+        <ion-item [hidden]="signup.type == 'USER'">
+          <ion-label>İnsanlara necə kömək edə bilərsiniz?</ion-label>
+          <ion-select [(ngModel)]="signup.subType" name="subtype" interface="action-sheet" cancelText="Bağla">
+            <ion-select-option [value]="'PSYCHOLOGIST'">Psixoloji yardım</ion-select-option>
+            <ion-select-option [value]="'LAWYER'">Hüquqi yardım</ion-select-option>
+            <ion-select-option [value]="'DOCTOR'">Medikal yardım</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+
+      <ion-item [hidden]="signup.type == 'SPECIALIST'">
+        <ion-label>Adınız gizli saxlanılsın?</ion-label>
+        <ion-checkbox slot="end" [(ngModel)]="signup.isAnonymous" name="isAnonymous"></ion-checkbox>
+      </ion-item>
     </ion-list>
 
     <div class="ion-padding">
-      <ion-button (click)="onSignup(signupForm)" type="submit" expand="block">Create</ion-button>
+      <ion-button (click)="onSignup(signupForm)" type="submit" expand="block">YAZIL</ion-button>
     </div>
   </form>
 

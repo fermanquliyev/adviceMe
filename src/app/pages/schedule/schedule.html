@@ -3,16 +3,9 @@
     <ion-buttons *ngIf="!showSearchbar" slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-segment *ngIf="ios" [(ngModel)]="segment" (ionChange)="updateSchedule()">
-      <ion-segment-button value="all">
-        All
-      </ion-segment-button>
-      <ion-segment-button value="favorites">
-        Favorites
-      </ion-segment-button>
-    </ion-segment>
-    <ion-title *ngIf="!ios && !showSearchbar">Schedule</ion-title>
-    <ion-searchbar *ngIf="showSearchbar" showCancelButton="always" [(ngModel)]="queryText" (ionChange)="updateSchedule()" (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
+    <ion-title *ngIf="!ios && !showSearchbar">Yazılar</ion-title>
+    <ion-searchbar *ngIf="showSearchbar" showCancelButton="always" [(ngModel)]="queryText" (ionChange)="getPosts(0)"
+      (ionCancel)="showSearchbar = false" placeholder="Axtarış"></ion-searchbar>
     <ion-buttons slot="end">
       <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true">
         <ion-icon slot="icon-only" name="search"></ion-icon>
@@ -25,62 +18,61 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-toolbar *ngIf="!ios">
-    <ion-segment [(ngModel)]="segment" (ionChange)="updateSchedule()">
-      <ion-segment-button value="all">
-        All
-      </ion-segment-button>
-      <ion-segment-button value="favorites">
-        Favorites
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Schedule</ion-title>
-    </ion-toolbar>
-    <ion-toolbar>
-      <ion-searchbar [(ngModel)]="queryText" (ionChange)="updateSchedule()" placeholder="Search"></ion-searchbar>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-list #scheduleList [hidden]="shownSessions === 0">
-    <ion-item-group *ngFor="let group of groups" [hidden]="group.hide">
-      <ion-item-divider sticky>
-        <ion-label>
-          {{group.time}}
-        </ion-label>
-      </ion-item-divider>
-
-      <ion-item-sliding *ngFor="let session of group.sessions" #slidingItem [attr.track]="session.tracks[0] | lowercase"
-        [hidden]="session.hide">
-        <ion-item routerLink="/app/tabs/schedule/session/{{session.id}}">
-          <ion-label>
-            <h3>{{session.name}}</h3>
-            <p>
-              {{session.timeStart}} &mdash; {{session.timeEnd}}: {{session.location}}
-            </p>
-          </ion-label>
+  <ion-row>
+    <ion-col size="12" offset="0" size-lg="4" offset-lg="4" size-md="6" offset-md="3">
+      <ion-card class="post-card">
+        <ion-item lines="none" class="post-item">
+          <ion-button class="post-some" color="light">
+            <ion-input type="text" name="postText" [(ngModel)]="createPostText" placeholder="Nə probleminiz var? Yazın"
+              class="post-some-title"></ion-input>
+          </ion-button>
+          <ion-buttons slot="end">
+            <ion-button color="medium">
+              <ion-icon slot="icon-only" name="image-outline"></ion-icon>
+            </ion-button>
+            <ion-button color="medium" (click)="createPost()">
+              <ion-icon slot="icon-only" name="send"></ion-icon>
+            </ion-button>
+          </ion-buttons>
         </ion-item>
-        <ion-item-options>
-          <ion-item-option color="favorite" (click)="addFavorite(slidingItem, session)" *ngIf="segment === 'all'">
-            Favorite
-          </ion-item-option>
-          <ion-item-option color="danger" (click)="removeFavorite(slidingItem, session, 'Remove Favorite')"
-            *ngIf="segment === 'favorites'">
-            Remove
-          </ion-item-option>
-        </ion-item-options>
-      </ion-item-sliding>
-    </ion-item-group>
-  </ion-list>
+      </ion-card>
 
-  <ion-list-header [hidden]="shownSessions > 0">
-    No Sessions Found
-  </ion-list-header>
+      <ion-header collapse="condense">
+        <ion-toolbar>
+          <ion-title size="large">Yazılar</ion-title>
+        </ion-toolbar>
+        <ion-toolbar>
+          <ion-searchbar [(ngModel)]="queryText" (ionChange)="getPosts(0)" placeholder="Axtarış"></ion-searchbar>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-list #postList *ngIf="postDatas.length">
+        <ion-item-sliding *ngFor="let post of postDatas;let i =index;" #slidingItem>
+          <ion-item>
+            <app-post [post]="post" (onRemove)="deletePost(i)"></app-post>
+          </ion-item>
+          <ion-item-options>
+            <ion-item-option *ngIf="!user.hasFavorite(post.id)" color="favorite"
+              (click)="addFavorite(slidingItem, post)">
+              SAXLA
+            </ion-item-option>
+            <ion-item-option color="danger" *ngIf="user.hasFavorite(post.id)"
+              (click)="removeFavorite(slidingItem, post, 'Yaddaşdan sil')">
+              POZ
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+
+      <ion-list-header *ngIf="!postDatas.length">
+        YAZI TAPILMADI
+      </ion-list-header>
+    </ion-col>
+  </ion-row>
+
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" #fab>
     <ion-fab-button>

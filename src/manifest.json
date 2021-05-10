@@ -1,8 +1,8 @@
 {
-  "name": "Ionic Conference",
-  "short_name": "Ionic Conference",
+  "name": "Danışman - Danışın!",
+  "short_name": "Danışman",
   "start_url": "index.html",
-  "display": "standalone",
+  "display": "fullscreen",
   "icons": [
     {
       "src": "assets/img/appicon.png",

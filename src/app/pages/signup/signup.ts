@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 
 import { UserData } from '../../providers/user-data';
 
-import { UserOptions } from '../../interfaces/user-options';
+import { RegistrationInput} from '../../interfaces/user-options';
+import { AuthService } from '../../providers/auth.service';
 
 
 
@@ -14,20 +15,27 @@ import { UserOptions } from '../../interfaces/user-options';
   styleUrls: ['./signup.scss'],
 })
 export class SignupPage {
-  signup: UserOptions = { username: '', password: '' };
+  signup: RegistrationInput =<any>{ email: '', password: '', type: "USER", subType:"DEFAULT" };
   submitted = false;
 
   constructor(
     public router: Router,
-    public userData: UserData
+    public auth: AuthService
   ) {}
+
+  ionViewWillEnter(){
+    this.signup =<any>{ email: '', password: '', type: "USER", subType:"DEFAULT" };
+    this.submitted = false;
+  }
 
   onSignup(form: NgForm) {
     this.submitted = true;
 
     if (form.valid) {
-      this.userData.signup(this.signup.username);
-      this.router.navigateByUrl('/app/tabs/schedule');
+      this.auth.signup(this.signup, "/login");
     }
+  }
+  log(){
+    console.log(this.signup);
   }
 }

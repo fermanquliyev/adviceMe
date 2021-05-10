@@ -3,9 +3,9 @@
 
     <ion-menu contentId="main-content">
       <ion-content>
-        <ion-list lines="none">
+        <ion-list *ngIf="loggedIn" lines="none">
           <ion-list-header>
-            Conference
+            Əsas
           </ion-list-header>
           <ion-menu-toggle autoHide="false" *ngFor="let p of appPages; let i = index">
             <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
@@ -20,14 +20,14 @@
 
         <ion-list *ngIf="loggedIn" lines="none">
           <ion-list-header>
-            Account
+            Hesab
           </ion-list-header>
 
           <ion-menu-toggle autoHide="false">
             <ion-item routerLink="/account" routerLinkActive="active" routerDirection="root" detail="false">
               <ion-icon slot="start" name="person"></ion-icon>
               <ion-label>
-                Account
+                Hesabım
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
@@ -36,7 +36,7 @@
             <ion-item routerLink="/support" routerLinkActive="active" routerDirection="root" detail="false">
               <ion-icon slot="start" name="help"></ion-icon>
               <ion-label>
-                Support
+                Dəstək
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
@@ -45,23 +45,29 @@
             <ion-item button (click)="logout()" detail="false">
               <ion-icon slot="start" name="log-out"></ion-icon>
               <ion-label>
-                Logout
+                Çıxış
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
-
+          <ion-item>
+            <ion-icon slot="start" name="moon-outline"></ion-icon>
+            <ion-label>
+              Gecə modu
+            </ion-label>
+            <ion-toggle [(ngModel)]="dark" (ngModelChange)="saveDarkMode($event)"></ion-toggle>
+          </ion-item>
         </ion-list>
 
         <ion-list *ngIf="!loggedIn" lines="none">
           <ion-list-header>
-            Account
+            Hesab
           </ion-list-header>
 
           <ion-menu-toggle autoHide="false">
             <ion-item routerLink="/login" routerLinkActive="active" routerDirection="root" detail="false">
               <ion-icon slot="start" name="log-in"></ion-icon>
               <ion-label>
-                Login
+                Giriş
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
@@ -70,7 +76,7 @@
             <ion-item routerLink="/support" routerLinkActive="active" routerDirection="root" detail="false">
               <ion-icon slot="start" name="help"></ion-icon>
               <ion-label>
-                Support
+                Dəstək
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
@@ -79,7 +85,7 @@
             <ion-item routerLink="/signup" routerLinkActive="active" routerDirection="root" detail="false">
               <ion-icon slot="start" name="person-add"></ion-icon>
               <ion-label>
-                Signup
+                Qeydiyyat
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
@@ -87,20 +93,20 @@
           <ion-item>
             <ion-icon slot="start" name="moon-outline"></ion-icon>
             <ion-label>
-              Dark Mode
+              Gecə modu
             </ion-label>
-            <ion-toggle [(ngModel)]="dark"></ion-toggle>
+            <ion-toggle [(ngModel)]="dark" (ngModelChange)="saveDarkMode($event)"></ion-toggle>
           </ion-item>
         </ion-list>
 
         <ion-list lines="none">
           <ion-list-header>
-            Tutorial
+            Başlanğıc
           </ion-list-header>
           <ion-menu-toggle autoHide="false">
             <ion-item button (click)="openTutorial()" detail="false">
               <ion-icon slot="start" name="hammer"></ion-icon>
-              <ion-label>Show Tutorial</ion-label>
+              <ion-label>İzahat</ion-label>
             </ion-item>
           </ion-menu-toggle>
         </ion-list>

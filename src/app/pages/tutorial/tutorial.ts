@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { MenuController, IonSlides } from '@ionic/angular';
 
 import { Storage } from '@ionic/storage';
+import { AuthService } from '../../providers/auth.service';
+import { UserData } from '../../providers/user-data';
 
 @Component({
   selector: 'page-tutorial',
@@ -12,18 +14,20 @@ import { Storage } from '@ionic/storage';
 })
 export class TutorialPage {
   showSkip = true;
-
+  appName = 'Danışman';
   @ViewChild('slides', { static: true }) slides: IonSlides;
 
   constructor(
     public menu: MenuController,
     public router: Router,
-    public storage: Storage
+    public storage: Storage,
+    public userData: UserData,
+    public auth: AuthService
   ) {}
 
   startApp() {
     this.router
-      .navigateByUrl('/app/tabs/schedule', { replaceUrl: true })
+      .navigateByUrl('/login', { replaceUrl: true })
       .then(() => this.storage.set('ion_did_tutorial', true));
   }
 
@@ -36,7 +40,12 @@ export class TutorialPage {
   ionViewWillEnter() {
     this.storage.get('ion_did_tutorial').then(res => {
       if (res === true) {
-        this.router.navigateByUrl('/app/tabs/schedule', { replaceUrl: true });
+          const isLoggedId = this.auth.isAuthenticated();
+          if(isLoggedId){
+            this.router.navigateByUrl('/tabs/schedule', { replaceUrl: true });
+          } else {
+            this.router.navigateByUrl('/login', { replaceUrl: true });
+          }
       }
     });
 

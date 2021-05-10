@@ -14,6 +14,9 @@ ion-fab-button {
   --background-activated: var(--ion-color-step-250, #d9d9d9);
 }
 
+.ios .post-card {
+  margin: 16px 12px 10px 12px !important;
+}
 $categories: (
   ionic: var(--ion-color-primary),
   angular: #ac282b,

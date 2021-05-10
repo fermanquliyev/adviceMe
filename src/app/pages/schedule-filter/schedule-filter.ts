@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Config, ModalController, NavParams } from '@ionic/angular';
-
-import { ConferenceData } from '../../providers/conference-data';
+import { CategoryData } from '../../providers/category-data';
 
 
 @Component({
@@ -12,10 +11,9 @@ import { ConferenceData } from '../../providers/conference-data';
 export class ScheduleFilterPage {
   ios: boolean;
 
-  tracks: {name: string, icon: string, isChecked: boolean}[] = [];
+  categories: {name: string, icon: string, id:number, isChecked: boolean}[] = [];
 
   constructor(
-    public confData: ConferenceData,
     private config: Config,
     public modalCtrl: ModalController,
     public navParams: NavParams
@@ -25,30 +23,29 @@ export class ScheduleFilterPage {
     this.ios = this.config.get('mode') === `ios`;
 
     // passed in array of track names that should be excluded (unchecked)
-    const excludedTrackNames = this.navParams.get('excludedTracks');
+    const excludedCategories = this.navParams.get('excludedCategories');
 
-    this.confData.getTracks().subscribe((tracks: any[]) => {
-      tracks.forEach(track => {
-        this.tracks.push({
-          name: track.name,
-          icon: track.icon,
-          isChecked: (excludedTrackNames.indexOf(track.name) === -1)
-        });
+    CategoryData.categories.forEach(cat => {
+      this.categories.push({
+        name: cat.text,
+        icon: 'star',
+        id:cat.id,
+        isChecked: (excludedCategories.indexOf(cat.id) === -1)
       });
     });
   }
 
   selectAll(check: boolean) {
     // set all to checked or unchecked
-    this.tracks.forEach(track => {
-      track.isChecked = check;
+    this.categories.forEach(cat => {
+      cat.isChecked = check;
     });
   }
 
   applyFilters() {
     // Pass back a new array of track names to exclude
-    const excludedTrackNames = this.tracks.filter(c => !c.isChecked).map(c => c.name);
-    this.dismiss(excludedTrackNames);
+    const excludedCategories = this.categories.filter(c => !c.isChecked).map(c => c.id);
+    this.dismiss(excludedCategories);
   }
 
   dismiss(data?: any) {

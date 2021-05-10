@@ -1,7 +1,7 @@
 <ion-header no-border>
   <ion-toolbar>
     <ion-buttons slot="end">
-      <ion-button color='primary' (click)="startApp()" [hidden]="!showSkip">Skip</ion-button>
+      <ion-button color='primary' (click)="startApp()" [hidden]="!showSkip">Keç</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -11,37 +11,35 @@
     <ion-slide>
       <img src="assets/img/ica-slidebox-img-1.png" class="slide-image" />
       <h2 class="slide-title">
-        Welcome to
-        <b>ICA</b>
+        <b>{{appName}}</b> platformasına xoş gəlmişsiniz!
       </h2>
       <p>
-        The
-        <b>ionic conference app</b> is a practical preview of the ionic framework in action, and a demonstration of proper code
-        use.
+        Bu program vasitəsilə artıq problemləriniz <b>yüngülləşəcək!</b>
       </p>
     </ion-slide>
 
     <ion-slide>
       <img src="assets/img/ica-slidebox-img-2.png" class="slide-image" />
-      <h2 class="slide-title">What is Ionic?</h2>
+      <h2 class="slide-title">{{appName}} nədir?</h2>
       <p>
-        <b>Ionic Framework</b> is an open source SDK that enables developers to build high quality mobile apps with web technologies
-        like HTML, CSS, and JavaScript.</p>
+        <b>{{appName}}</b> qarşılaşdığınız problemləri və koməyə ehtiyacınız olduğu mövzuları paylaşmağa,
+        insanlardan və <b>mütəxəsislərdən məsləhət</b> almağa imkan verən bir platformadır.</p>
     </ion-slide>
 
     <ion-slide>
       <img src="assets/img/ica-slidebox-img-3.png" class="slide-image" />
-      <h2 class="slide-title">What is Ionic Appflow?</h2>
+      <h2 class="slide-title">Gizliliyiniz bizim üçün önəmlidir!</h2>
       <p>
-        <b>Ionic Appflow</b> is a powerful set of services and features built on top of Ionic Framework that brings a totally new
-        level of app development agility to mobile dev teams.</p>
+        <b>{{appName}}</b> platformasında siz öz <b>kimliyinizi gizləyə</b> bilərsiniz. Bununla da sizin adınız və soyadınız heç yerdə görünməyəcək.
+        Kimliyiniz şərti olaraq saxlanılacaq. Bunu istədiyiniz zaman dəyişdirə bilərsiniz!
+      </p>
     </ion-slide>
 
     <ion-slide>
       <img src="assets/img/ica-slidebox-img-4.png" class="slide-image" />
-      <h2 class="slide-title">Ready to Play?</h2>
+      <h2 class="slide-title">Başlayaq?</h2>
       <ion-button fill="clear" (click)="startApp()">
-        Continue
+        Davam et
         <ion-icon slot="end" name="arrow-forward"></ion-icon>
       </ion-button>
     </ion-slide>

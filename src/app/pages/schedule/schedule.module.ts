@@ -6,13 +6,15 @@ import { IonicModule } from '@ionic/angular';
 import { SchedulePage } from './schedule';
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 import { SchedulePageRoutingModule } from './schedule-routing.module';
+import { SharedModule } from '../common/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SchedulePageRoutingModule
+    SchedulePageRoutingModule,
+    SharedModule
   ],
   declarations: [
     SchedulePage,

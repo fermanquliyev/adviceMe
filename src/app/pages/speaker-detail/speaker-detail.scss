@@ -37,7 +37,7 @@ ion-toolbar ion-menu-button {
 }
 
 .speaker-background img {
-  width: 70px;
+  width: 100px;
   border-radius: 50%;
   margin-top: calc(-1 * var(--ion-safe-area-top));
 }
@@ -72,4 +72,8 @@ ion-toolbar ion-menu-button {
   margin-bottom: 20px;
 
   background: var(--ion-color-step-150, #d7d8da);
+}
+
+.ios .post-card {
+  margin: 16px 12px 10px 12px !important;
 }

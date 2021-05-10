@@ -2,27 +2,25 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button *ngIf="ios" (click)="dismiss()">Cancel</ion-button>
-      <ion-button *ngIf="!ios" (click)="selectAll(false)">Reset</ion-button>
+      <ion-button *ngIf="!ios" (click)="selectAll(false)">Sıfırla</ion-button>
     </ion-buttons>
 
     <ion-title>
-      Filter Sessions
+      Kategoriyalar
     </ion-title>
 
     <ion-buttons slot="end">
-      <ion-button (click)="applyFilters()" strong>Done</ion-button>
+      <ion-button (click)="applyFilters()" strong>Tamam</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list [lines]="ios ? 'inset' : 'full'">
-    <ion-list-header>Tracks</ion-list-header>
-
-    <ion-item *ngFor="let track of tracks" [attr.track]="track.name | lowercase">
-      <ion-icon *ngIf="ios" slot="start" [name]="track.icon" color="medium"></ion-icon>
-      <ion-label>{{track.name}}</ion-label>
-      <ion-checkbox [(ngModel)]="track.isChecked"></ion-checkbox>
+    <ion-item *ngFor="let cat of categories" [attr.track]="cat.name | lowercase">
+      <ion-icon *ngIf="ios" slot="start" [name]="cat.icon" color="medium"></ion-icon>
+      <ion-label>{{cat.name}}</ion-label>
+      <ion-checkbox [(ngModel)]="cat.isChecked"></ion-checkbox>
     </ion-item>
 
   </ion-list>
@@ -32,10 +30,10 @@
 <ion-footer translucent="true" *ngIf="ios">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="selectAll(false)">Deselect All</ion-button>
+      <ion-button (click)="selectAll(false)">Hamısını sil</ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button (click)="selectAll(true)">Select All</ion-button>
+      <ion-button (click)="selectAll(true)">Hamıısını seç</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>

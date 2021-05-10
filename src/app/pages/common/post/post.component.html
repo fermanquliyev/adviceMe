@@ -1,0 +1,61 @@
+<ion-card class="post-list-card">
+  <ion-item lines="none">
+    <ion-avatar slot="start">
+      <img [src]="'assets/img/'+post.creator.subType+'.png'">
+    </ion-avatar>
+    <ion-label>
+      {{post.creator.name}} {{post.creator.surname}} <span *ngIf="post.creator.id!=post.wallUser.id">>{{post.wallUser.name}} {{post.wallUser.surname}}</span>
+      <p>{{post.createdAt | date}}</p>
+    </ion-label>
+    <ion-buttons slot="end">
+      <ion-button color="medium" size="small"
+        *ngIf="post.creator.id==currentUser?.id || post.wallUser.id==currentUser?.id" (click)="deletePost()">
+        <ion-icon slot="icon-only" md="trash" ios="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-item>
+
+  <ion-card-content class="post-list-content" *ngIf="postContent">
+    <img *ngIf="postContent['image']" [src]="postContent['image']" class="postImage">
+    {{postContent['text']}}
+  </ion-card-content>
+
+
+  <details #details>
+    <summary>
+      <ion-buttons slot="start">
+        <ion-button color="medium" (click)="details.open=!details.open;">
+          <ion-icon slot="start" name="chatbox-outline"></ion-icon>
+          <small>{{post.comments.length}}</small>
+        </ion-button>
+      </ion-buttons>
+    </summary>
+    <ion-list *ngIf="post.comments.length" lines="none">
+      <ion-item *ngFor="let comment of post.comments;let i = index" lines="none">
+        <ion-avatar slot="start">
+          <img [src]="'assets/img/'+comment.creator.subType+'.png'">
+        </ion-avatar>
+        <ion-buttons slot="end">
+          <ion-button color="medium" size="small" (click)="deleteComment(comment.id,i)"
+            *ngIf="comment.creator.id==currentUser?.id || post.creator.id==currentUser?.id  || post.wallUser.id==currentUser?.id">
+            <ion-icon slot="icon-only" md="trash" ios="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-label>
+          <h2>{{comment.creator.name}} {{comment.creator.surname}}</h2>
+          <p style="white-space: pre-wrap;">{{comment.text}}</p>
+          <p>{{comment.createdAt|date}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-item class="mb-10">
+      <ion-avatar slot="start">
+        <img *ngIf="currentUser" [src]="'assets/img/'+currentUser.subType+'.png'">
+      </ion-avatar>
+      <ion-input [(ngModel)]="commentText" name="commentText" placeholder="Rəy yazın"></ion-input>
+      <ion-button slot="end" color="medium" (click)="createComment()" [disabled]="commentBusy">
+        <ion-icon slot="icon-only" name="send"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </details>
+</ion-card>

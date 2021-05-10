@@ -2,8 +2,9 @@ import { AfterViewInit, Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AlertController } from '@ionic/angular';
+import { AuthService } from '../../providers/auth.service';
 
-import { UserData } from '../../providers/user-data';
+import { CurrentUser, UserData } from '../../providers/user-data';
 
 
 @Component({
@@ -12,16 +13,17 @@ import { UserData } from '../../providers/user-data';
   styleUrls: ['./account.scss'],
 })
 export class AccountPage implements AfterViewInit {
-  username: string;
+  user: CurrentUser;
 
   constructor(
     public alertCtrl: AlertController,
     public router: Router,
-    public userData: UserData
+    public userData: UserData,
+    public auth: AuthService
   ) { }
 
   ngAfterViewInit() {
-    this.getUsername();
+    this.user = UserData.currentUser;
   }
 
   updatePicture() {
@@ -33,23 +35,23 @@ export class AccountPage implements AfterViewInit {
   // clicking Cancel will close the alert and do nothing
   async changeUsername() {
     const alert = await this.alertCtrl.create({
-      header: 'Change Username',
+      header: 'E-poçtu dəyiş',
       buttons: [
-        'Cancel',
+        'Ləğv et',
         {
-          text: 'Ok',
+          text: 'Tamam',
           handler: (data: any) => {
-            this.userData.setUsername(data.username);
+            //this.userData.setUsername(data.username);
             this.getUsername();
           }
         }
       ],
       inputs: [
         {
-          type: 'text',
-          name: 'username',
-          value: this.username,
-          placeholder: 'username'
+          type: 'email',
+          name: 'email',
+          value: this.user.email,
+          placeholder: 'E-poçt'
         }
       ]
     });
@@ -57,9 +59,9 @@ export class AccountPage implements AfterViewInit {
   }
 
   getUsername() {
-    this.userData.getUsername().then((username) => {
-      this.username = username;
-    });
+    // this.userData.getUsername().then((username) => {
+    //   this.username = username;
+    // });
   }
 
   changePassword() {
@@ -67,8 +69,7 @@ export class AccountPage implements AfterViewInit {
   }
 
   logout() {
-    this.userData.logout();
-    this.router.navigateByUrl('/login');
+    this.auth.logout();
   }
 
   support() {
